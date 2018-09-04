@@ -1,0 +1,228 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+public class TeamSystemScript : MonoBehaviour {
+
+    public GameObject char1;
+    static public bool p1;
+    static public bool p1M;
+    public GameObject char2;
+    static public bool p2;
+    static public bool p2M;
+    public GameObject char3;
+    static public bool p3;
+    static public bool p3M;
+    public GameObject char4;
+    static public bool p4;
+    static public bool p4M;
+    GameObject player1HPMP;
+    GameObject player2HPMP;
+    GameObject player3HPMP;
+    GameObject player4HPMP;
+    static public bool okToChange;
+    static public bool okToChange2;
+    public static bool stepSound = false;
+    public static bool groundSound;
+
+    public AudioClip ChangeChar; 
+
+    public AudioSource m_AudioSource;
+    EventSystem m_EventSystem;
+
+    //Change Character Effect
+    public GameObject effect;
+    public float time;
+    public bool effectOn;
+    
+    void Awake()
+    {
+        p1 = true;
+        p1M = true;
+        player1HPMP = GameObject.Find("player1HPMP");
+        player2HPMP = GameObject.Find("player2HPMP");
+        player3HPMP = GameObject.Find("player3HPMP");
+        player4HPMP = GameObject.Find("player4HPMP");
+        effect.SetActive(false);
+    }
+
+    void Start()
+    {
+        player2HPMP.SetActive(false);
+        player3HPMP.SetActive(false);
+        player4HPMP.SetActive(false);
+        char2.SetActive(false);
+        char3.SetActive(false);
+        char4.SetActive(false);
+        okToChange = false;
+        effect.SetActive(false);
+
+    }
+	
+	void Update () {
+        if (MAINScript.partyNumber == 2)
+        {
+            if (Input.GetButtonDown("Fire2") && p2 == false && MenuScript.pause == false && SemiBossScript.SemiBossDed == true && StartSemiBossScript.startCut == false)
+            {
+                StartCoroutine(EffectLoko());
+                char1.SetActive(false);
+                player1HPMP.SetActive(false);
+                player2HPMP.SetActive(true);
+                char2.SetActive(true);
+                HumanFemaleEnemyAIScript.player = char2.gameObject;
+                char2.transform.position = char1.transform.position;
+                char2.transform.rotation = char1.transform.rotation;
+                stepSound = true;
+                p2 = true;
+                p1 = false;
+                m_AudioSource.clip = ChangeChar;
+                m_AudioSource.Play();
+                StartCoroutine(SoundGO());
+                StartCoroutine(ChangeGO());
+            }
+            else if (Input.GetButtonDown("Fire2") && p1 == false && MenuScript.pause == false && SemiBossScript.SemiBossDed == true && StartSemiBossScript.startCut == false)
+            {
+                StartCoroutine(EffectLoko());
+                char2.SetActive(false);
+                player2HPMP.SetActive(false);
+                player1HPMP.SetActive(true);
+                char1.SetActive(true);
+                BossAI.player = char1.gameObject;
+                char1.transform.position = char2.transform.position;
+                char1.transform.rotation = char2.transform.rotation;
+                p2 = false;
+                p1 = true;
+                m_AudioSource.clip = ChangeChar;
+                m_AudioSource.Play();
+                StartCoroutine(ChangeGO());
+                StartCoroutine(SoundGO());
+            }
+        }
+        else if (MAINScript.partyNumber == 3)
+        {
+            if (Input.GetButtonDown("Fire2") && p2 == false && MenuScript.pause == false && SemiBossScript.SemiBossDed == true && StartSemiBossScript.startCut == false)
+            {
+                StartCoroutine(EffectLoko());
+                char1.SetActive(false);
+                player1HPMP.SetActive(false);
+                player2HPMP.SetActive(true);
+                player4HPMP.SetActive(false);
+                char2.SetActive(true);
+                char3.SetActive(false);
+                HumanFemaleEnemyAIScript.player = char2.gameObject;
+                BossAI.player = char2.gameObject;
+                LockOnAreaScript.currentPlayer = char2.gameObject;
+                char2.transform.position = char1.transform.position;
+                char2.transform.rotation = char1.transform.rotation;
+                stepSound = true;
+                p2 = true;
+                p1 = true;
+                p3 = false;
+                m_AudioSource.clip = ChangeChar;
+                m_AudioSource.Play();
+                StartCoroutine(SoundGO());
+                StartCoroutine(SoundGO2());
+                StartCoroutine(ChangeGO());
+                StartCoroutine(ChangeGO2());
+            }
+            else if (Input.GetButtonDown("Fire2") && p3 == false && MenuScript.pause == false && SemiBossScript.SemiBossDed == true && StartSemiBossScript.startCut == false)
+            {
+                StartCoroutine(EffectLoko());
+                char1.SetActive(false);
+                player1HPMP.SetActive(false);
+                player2HPMP.SetActive(false);
+                player4HPMP.SetActive(true);
+                char2.SetActive(false);
+                char3.SetActive(true);
+                HumanFemaleEnemyAIScript.player = char3.gameObject;
+                BossAI.player = char3.gameObject;
+                LockOnAreaScript.currentPlayer = char3.gameObject;
+                char3.transform.position = char2.transform.position;
+                char3.transform.rotation = char2.transform.rotation;
+                stepSound = true;
+                p2 = true;
+                p1 = false;
+                p3 = true;
+                m_AudioSource.clip = ChangeChar;
+                m_AudioSource.Play();
+                StartCoroutine(SoundGO());
+                StartCoroutine(SoundGO2());
+                StartCoroutine(ChangeGO());
+                StartCoroutine(ChangeGO2());
+            }
+            else if (Input.GetButtonDown("Fire2") && p1 == false && MenuScript.pause == false && SemiBossScript.SemiBossDed == true && StartSemiBossScript.startCut == false)
+            {
+                StartCoroutine(EffectLoko());
+                char1.SetActive(true);
+                player4HPMP.SetActive(false);
+                player2HPMP.SetActive(false);
+                player1HPMP.SetActive(true);
+                char2.SetActive(false);
+                char3.SetActive(false);
+                HumanFemaleEnemyAIScript.player = char1.gameObject;
+                BossAI.player = char1.gameObject;
+                LockOnAreaScript.currentPlayer = char1.gameObject;
+                char1.transform.position = char3.transform.position;
+                char1.transform.rotation = char3.transform.rotation;
+                stepSound = true;
+                p2 = false;
+                p1 = true;
+                p3 = true;
+                m_AudioSource.clip = ChangeChar;
+                m_AudioSource.Play();
+                StartCoroutine(SoundGO());
+                StartCoroutine(SoundGO2());
+                StartCoroutine(ChangeGO());
+                StartCoroutine(ChangeGO2());
+            }
+        }
+
+    }
+    
+    IEnumerator ChangeGO()
+    {
+        stepSound = true;
+        stepSound = true;
+        okToChange = true;
+        yield return new WaitForSeconds(0.2f);
+        okToChange = false;
+        groundSound = false;
+        stepSound = false;
+    }
+    IEnumerator SoundGO()
+    {
+        stepSound = true;
+        yield return new WaitForSeconds(0.6f);
+        stepSound = false;
+    }
+
+    IEnumerator FixProblem()
+    {
+        char1.SetActive(false);
+        yield return new WaitForSeconds(0.1f);
+        char1.SetActive(true);
+    }
+    IEnumerator EffectLoko()
+    {
+        if (effectOn == false)
+        {
+            effect.SetActive(true);
+            effectOn = true;
+            yield return new WaitForSeconds(time);
+            effect.SetActive(false);
+            effectOn = false;
+        }
+        else if (effectOn == true)
+        {
+            effect.SetActive(false);
+            effect.SetActive(true);
+            effectOn = true;
+            yield return new WaitForSeconds(time);
+            effect.SetActive(false);
+            effectOn = false;
+        }
+
+    }
+
+}
